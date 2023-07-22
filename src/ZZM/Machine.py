@@ -4,6 +4,7 @@ from .Stack import Stack
 class ZZM:
     def __init__(self) -> None:
         self.ALU = ALU()
+        self.Stack = Stack(max_deepth=0x0800)
         self.A = 0 # number 1
         self.B = 0 # number 2
         self.C = 0 # calcute result
