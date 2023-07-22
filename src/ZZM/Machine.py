@@ -1,4 +1,5 @@
 from .ALU import ALU
+from .Stack import Stack
 
 class ZZM:
     def __init__(self) -> None:
@@ -6,12 +7,22 @@ class ZZM:
         self.A = 0 # number 1
         self.B = 0 # number 2
         self.C = 0 # calcute result
-        self.D = 0 # address base
-        self.PC =0
+        self.D = 0 # label or second result
+        # and address base
+        self.PC = 0
+        self.AD = 0
         self.In = 0
         self.Out = 0
         self.Loop = True
-        self.M = [0 for _ in range(0xFF)]
+        self.PM0 = [0 for _ in range(0x0100)] # Program memory
+        self.DM0 = [0 for _ in range(0x0100)] # Data memory
+        self.PM1 = [0 for _ in range(0x0100)] # Program memory
+        self.DM1 = [0 for _ in range(0x0100)] # Data memory
+        self.RM0 = [0 for _ in range(0x0100)]
+        self.RM1 = [0 for _ in range(0x0100)]
+        self.RM2 = [0 for _ in range(0x0100)]
+        self.RM3 = [0 for _ in range(0x0100)]
+        self.M = [0 for _ in range(0x200)]
         self.M[0] = 0x10
         self.M[1] = 0x42
         self.M[2] = 0x11
@@ -38,36 +49,30 @@ class ZZM:
         print(f"D:{self.D}")
         print(f"M:{self.M}")
 
+    def register_exchange(self,X)->None:
+        pass
+
     def step(self)->None:
         to_do_idx = self.PC
         cmd = self.M[to_do_idx]
         opnum = self.M[to_do_idx+1]
         if cmd <=0:
             pass
-        elif cmd == 0x10:
+        elif cmd == 0x20:
             # set A as value
             self.A = opnum
-        elif cmd == 0x11:
+        elif cmd == 0x21:
             # set B as value
             self.B = opnum
-        elif cmd == 0x12:
+        elif cmd == 0x22:
             # set C as value
             self.C = opnum
-        elif cmd == 0x13:
+        elif cmd == 0x23:
             # set D as value
             self.D = opnum
-        elif cmd == 0x20:
-            # load A from address
-            self.A = self.M[opnum]
-        elif cmd == 0x21:
-            # load B from address
-            self.B = self.M[opnum]
-        elif cmd == 0x22:
-            # load C from address
-            self.C = self.M[opnum]
-        elif cmd == 0x23:
-            # load D from address
-            self.D = self.M[opnum]
+        # elif cmd == 0x30:
+        #     # register exchange
+        #     self.register_exchange(opnum)
         elif cmd == 0x30:
             # save A to address
             self.M[opnum] = self.A
@@ -149,6 +154,26 @@ class ZZM:
         elif cmd == 0x80:
             # Call ALU, input A and B, out C, label D
             self.C, self.D = self.ALU.calculate(self.A,self.B,opnum)
+        elif cmd == 0x81:
+            # push C to Stack, return full status to D
+            self.Stack.push(self.C)
+            self.D = self.Stack.is_full()
+        elif cmd == 0x82:
+            # pop Stack to C, return empty status to  D
+            self.C = self.Stack.pop()
+            self.D =  self.Stack.is_empty()
+        elif cmd == 0x83:
+            # return full status to C
+            self.C = self.Stack.is_full()
+        elif cmd == 0x84:
+            # return empty status to C
+            self.C = self.Stack.is_empty()
+        elif cmd == 0x85:
+            # Input copy to C
+            self.C = self.In
+        elif cmd == 0x86:
+            # C copy to Output
+            self.Out = self.C
         elif cmd == 0XFF:
             # stop
             self.Loop = False
