@@ -20,8 +20,10 @@ class ZZM:
         self.M[5] = 0x52
         self.M[6] = 0x32
         self.M[7] = 0x7F
-        self.M[8] = 0xFF
-        self.M[9] = 0x00
+        self.M[8] = 0x33
+        self.M[9] = 0x80
+        self.M[0x0A] = 0xFF
+        self.M[0x0B] = 0x00
 
     def loop(self)->None:
         while self.Loop:

@@ -143,54 +143,21 @@ class ALU:
                 label = 1
             res = out % 256
         elif Mode == 0x51:
-            # Add 1
-            out = A + 1
-            if out > 255 or out<0:
-                # overflow
-                label = 1
-            res = out % 256
-        elif Mode == 0x52:
             # Sub
             out = A-B
             if out > 255 or out<0:
                 # overflow
                 label = 1
             res = out%256
-        elif Mode == 0x53:
-            # Sub 1
-            out = A-1
-            if out > 255 or out<0:
-                # overflow
-                label = 1
-            res = out%256
-        elif Mode == 0x54:
+        elif Mode == 0x52:
             # Mul
             out = A*B
-            if out > 255 or out<0:
-                # overflow
-                label = 1
-            res = out%256
-        elif Mode == 0x55:
-            # SQR
-            out = A*A
-            if out>255 or out<0:
-                # overflow
-                label = 1
-            res = out%256
-        elif Mode == 0x56:
+            res = out%256 # low byte
+            label = out//256 # high byte
+        elif Mode == 0x53:
             # DIV
-            out = A//B
-            if out>255 or out<0:
-                # overflow
-                label = 1
-            res = out%256
-        elif Mode == 0x57:
-            # MOD
-            out = A%B
-            if out>255 or out<0:
-                # overflow
-                label = 1
-            res = out % 256
+            res = (A//B)%256
+            label = (A%B)%256
         else:
             pass
         return res, label
