@@ -23,9 +23,9 @@ class ZZM:
         self.RM2 = [0 for _ in range(0x0100)]
         self.RM3 = [0 for _ in range(0x0100)]
         self.M = [0 for _ in range(0x200)]
-        self.M[0] = 0x10
+        self.M[0] = 0x20
         self.M[1] = 0x42
-        self.M[2] = 0x11
+        self.M[2] = 0x21
         self.M[3] = 0x9F
         self.M[4] = 0x80
         self.M[5] = 0x52
@@ -70,9 +70,9 @@ class ZZM:
         elif cmd == 0x23:
             # set D as value
             self.D = opnum
-        # elif cmd == 0x30:
-        #     # register exchange
-        #     self.register_exchange(opnum)
+        elif cmd == 0x30:
+            # register exchange
+            self.register_exchange(opnum)
         elif cmd == 0x30:
             # save A to address
             self.M[opnum] = self.A
