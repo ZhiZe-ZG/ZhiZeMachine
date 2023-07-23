@@ -4,7 +4,7 @@ class RegisterGroup:
         self.R = [0 for _ in range(self.reg_num)]
     
     def register_exchange(self, Mode):
-        source = Mode&0xF0
+        source = (Mode&0xF0)>>4
         des = Mode&0x0F
         self.R[des] =self.R[source]
 
