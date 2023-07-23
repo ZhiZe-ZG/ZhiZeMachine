@@ -1,29 +1,23 @@
 from .ALU import ALU
 from .Stack import Stack
+from .Memory import Memory
+from .RegisterGroup import RegisterGroup
 
 
 class ZZM:
     def __init__(self) -> None:
-        self.ALU = ALU()
-        self.Stack = Stack(max_deepth=0x0800)
-        self.A = 0  # number 1
-        self.B = 0  # number 2
-        self.C = 0  # calcute result
-        self.D = 0  # label or second result
+        self.Slots = [None, # for write immediatly number to register
+                      RegisterGroup(), ALU(), Memory(), Stack(max_deepth=0x0800)]
+        # self.A = 0  # number 1
+        # self.B = 0  # number 2
+        # self.C = 0  # calcute result
+        # self.D = 0  # label or second result
         # and address base
         self.PC = 0
-        self.AD = 0
-        self.In = 0
-        self.Out = 0
+        # self.AD = 0
+        # self.In = 0
+        # self.Out = 0
         self.Loop = True
-        # self.PM0 = [0 for _ in range(0x0100)] # Program memory
-        # self.DM0 = [0 for _ in range(0x0100)] # Data memory
-        # self.PM1 = [0 for _ in range(0x0100)] # Program memory
-        # self.DM1 = [0 for _ in range(0x0100)] # Data memory
-        # self.RM0 = [0 for _ in range(0x0100)]
-        # self.RM1 = [0 for _ in range(0x0100)]
-        # self.RM2 = [0 for _ in range(0x0100)]
-        # self.RM3 = [0 for _ in range(0x0100)]
         self.M = [
             0x20,
             0xAF,
@@ -44,7 +38,11 @@ class ZZM:
             0xFF,
             0x00,
         ]
+        self.D =[
+
+        ]
         self.M = self.M + [0 for _ in range(0x100 - len(self.M))]
+        self.D = self.D + [0 for _ in range(0x100 - len(self.D))]
 
     def loop(self) -> None:
         while self.Loop:
@@ -53,11 +51,9 @@ class ZZM:
 
     def show(self) -> None:
         print(f"PC:{self.PC}")
-        print(f"A:{self.A}")
-        print(f"B:{self.B}")
-        print(f"C:{self.C}")
-        print(f"D:{self.D}")
+        print(f"Registers:{self.Slots[1].R}")
         print(f"M:{self.M}")
+        print(f"D:{self.D}")
 
     def register_exchange(self, X) -> None:
         pass
