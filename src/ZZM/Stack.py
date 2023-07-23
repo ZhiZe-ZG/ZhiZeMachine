@@ -23,5 +23,18 @@ class Stack:
         else:
             return 0
         
-    def stack_operation(self):
-        pass
+    def stack_operation(self, A, Mode):
+        out = 0
+        label = 0
+        if Mode == 0x00:
+            self.push(A)
+            label = self.is_full()
+        elif Mode == 0x01:
+            out = self.pop()
+            label = self.is_empty()
+        elif Mode == 0x02:
+            label = self.is_full()
+        elif Mode == 0x03:
+            label = self.is_empty()
+        return out, label
+
