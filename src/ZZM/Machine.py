@@ -1,11 +1,13 @@
 from .ALU import ALU
 from .Stack import Stack
 from .Memory import Memory
-from .RegisterGroup import RegisterGroup
+from .RegisterGroup import RegisterGroup16
+from .Controller import Controller
 
 
 class ZZM:
     def __init__(self) -> None:
+        self.components = [RegisterGroup16(),Controller(), ]
         self.Slots = [
             None,  # for write immediate number to register
             RegisterGroup(),

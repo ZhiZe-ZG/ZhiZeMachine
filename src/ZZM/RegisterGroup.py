@@ -5,7 +5,6 @@ class RegisterGroup16(Component):
     def __init__(self):
         super().__init__()
         super()._slots = [
-            self.register_exchange,
             self.register_write_data_0,
             self.register_write_data_1,
             self.register_write_data_2,
@@ -22,6 +21,7 @@ class RegisterGroup16(Component):
             self.register_write_data_D,
             self.register_write_data_E,
             self.register_write_data_F,
+            self.register_exchange,
         ]
         super()._slots_register_config = 0
         self.reg_num = 16
