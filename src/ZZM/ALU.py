@@ -1,5 +1,6 @@
 from .Component import Component
 
+
 class ALU(Component):
     """
     8-bit ALU
@@ -8,9 +9,10 @@ class ALU(Component):
     def __init__(self):
         super().__init__()
         super()._slots = [self.calculate]
-        super()._slots_register_need = [{'in':[0,1], 'out':[2,3]}]
+        super()._slots_register_config = 4
 
-    def calculate(self, A, B, Mode):
+    def calculate(self, reg, Mode):
+        A, B = reg.R[0], reg.R[1]
         res = 0
         label = 0
         # binary logical operations
@@ -161,7 +163,7 @@ class ALU(Component):
             # Mul
             out = A * B
             res = out % 256  # low byte
-            label = ((out // 256)>0)%256
+            label = ((out // 256) > 0) % 256
         elif Mode == 0x53:
             # DIV
             res = (A // B) % 256
@@ -169,38 +171,39 @@ class ALU(Component):
         # compare
         elif Mode == 0x54:
             # GE
-            res = (A>=B)%256
+            res = (A >= B) % 256
         elif Mode == 0x55:
             # LE
-            res = (A<=B)%256
+            res = (A <= B) % 256
         elif Mode == 0x56:
             # GT
-            res = (A>B)%256
+            res = (A > B) % 256
         elif Mode == 0x57:
             # LT
-            res = (A<B)%256
+            res = (A < B) % 256
         elif Mode == 0x58:
             # EQ
-            res = (A==B)%256
+            res = (A == B) % 256
         elif Mode == 0x59:
             # NE
-            res = (A!=B)%256
+            res = (A != B) % 256
         # even odd
         elif Mode == 0x5A:
             # A Even
-            res = (A%2==0)%256
+            res = (A % 2 == 0) % 256
         elif Mode == 0x5B:
             # A Odd
-            res = (A%2==1)%256
+            res = (A % 2 == 1) % 256
         elif Mode == 0x5C:
             # B Even
-            res = (B%2==0)%256
+            res = (B % 2 == 0) % 256
         elif Mode == 0x5D:
             # B Odd
-            res = (B%2==1)%256
+            res = (B % 2 == 1) % 256
         else:
             pass
-        return res, label
+        reg.R[2], reg.R[3] = res, label
+        return
 
     def __get_bits(self, X):
         b = [0 for _ in range(8)]

@@ -1,8 +1,13 @@
-class Stack:
+from .Component import Component
+
+
+class Stack(Component):
     def __init__(self, max_deepth=0x400):
+        super().__init__()
+        super()._slots = [self.stack_operation]
+        super()._slots_register_config = 4
         self.max_deepth = max_deepth
         self.L = []
-        pass
 
     def is_full(self):
         return len(self.L) >= self.max_deepth
@@ -22,8 +27,9 @@ class Stack:
             return self.L.pop()
         else:
             return 0
-        
-    def stack_operation(self, A, Mode):
+
+    def stack_operation(self, reg, Mode):
+        A = reg.R[0]
         out = 0
         label = 0
         if Mode == 0x00:
@@ -36,5 +42,5 @@ class Stack:
             label = self.is_full()
         elif Mode == 0x03:
             label = self.is_empty()
-        return out, label
-
+        reg.R[0], reg.R[3] = out, label
+        return
