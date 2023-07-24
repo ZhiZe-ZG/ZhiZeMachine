@@ -1,11 +1,10 @@
 from .Component import Component
 
-class Controller(Component):
+class ControllerMemory(Component):
     def __init__(self):
         super().__init__()
         super()._slots = [self.read_write_PDM]
         super()._slots_register_config = 4
-        self.PC = 0
         self.PM = [0 for _ in range(256)] # program memory
         self.DM = [0 for _ in range(256)] # data memory
 
@@ -29,3 +28,25 @@ class Controller(Component):
         reg.R[1] = label
         reg.R[2] = out
         return
+
+class ProgramCounter(Component):
+    def __init__(self):
+        super().__init__()
+        super()._slots = [self.jump]
+        super()._slots_register_config = 4
+        self.PC = 0
+
+    def jump(self,reg, mode):
+        C = reg.R[2]
+        D = reg.R[3]
+        if mode == 0x00:
+            # jump when C is zero
+            if C == 0:
+                self.PC = D-1 # PC will always add 1
+        elif mode == 0x01:
+            # jump when C is not zero
+            if C != 0:
+                self.PC = D-1 # PC will always add 1
+    
+    def step(self):
+        self.PC = self.PC+1

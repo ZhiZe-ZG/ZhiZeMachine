@@ -2,28 +2,22 @@ from .ALU import ALU
 from .Stack import Stack
 from .Memory import Memory
 from .RegisterGroup import RegisterGroup16
-from .Controller import Controller
+from .Controller import ControllerMemory, ProgramCounter
 
 
 class ZZM:
     def __init__(self) -> None:
-        self.components = [RegisterGroup16(),Controller(), ]
-        self.Slots = [
-            None,  # for write immediate number to register
-            RegisterGroup(),
+        self.CM = ControllerMemory()
+        self.PC = ProgramCounter()
+        self.components = [
+            RegisterGroup16(),
+            self.PC,
+            self.CM,
             ALU(),
             Memory(),
             Stack(max_deepth=0x0800),
         ]
-        # self.A = 0  # number 1
-        # self.B = 0  # number 2
-        # self.C = 0  # calcute result
-        # self.D = 0  # label or second result
-        # and address base
-        self.PC = 0
-        # self.AD = 0
-        # self.In = 0
-        # self.Out = 0
+        self.Slots = sum([c.get_slots() for c in self.components],[])
         self.Loop = True
         self.M = [
             0x00,  # load A 0xAD
@@ -59,7 +53,7 @@ class ZZM:
         pass
 
     def step(self) -> None:
-        to_do_idx = self.PC
+        to_do_idx = self..PC
         cmd = self.M[to_do_idx]
         opnum = self.D[to_do_idx]
         if cmd < 0:
