@@ -4,6 +4,25 @@ from .Component import Component
 class RegisterGroup16(Component):
     def __init__(self):
         super().__init__()
+        super()._slots_names = [
+            "register_write_data_0",
+            "register_write_data_1",
+            "register_write_data_2",
+            "register_write_data_3",
+            "register_write_data_4",
+            "register_write_data_5",
+            "register_write_data_6",
+            "register_write_data_7",
+            "register_write_data_8",
+            "register_write_data_9",
+            "register_write_data_A",
+            "register_write_data_B",
+            "register_write_data_C",
+            "register_write_data_D",
+            "register_write_data_E",
+            "register_write_data_F",
+            "register_exchange",
+        ]
         super()._slots = [
             self.register_write_data_0,
             self.register_write_data_1,

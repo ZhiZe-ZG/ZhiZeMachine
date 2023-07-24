@@ -3,6 +3,7 @@ from .Component import Component
 class ControllerMemory(Component):
     def __init__(self):
         super().__init__()
+        super()._slots_names = ['RW_PDM']
         super()._slots = [self.read_write_PDM]
         super()._slots_register_config = 4
         self.PM = [0 for _ in range(256)] # program memory

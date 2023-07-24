@@ -9,15 +9,17 @@ class ZZM:
     def __init__(self) -> None:
         self.CM = ControllerMemory()
         self.PC = ProgramCounter()
+        self.RG = RegisterGroup16()
         self.components = [
-            RegisterGroup16(),
+            self.RG,
             self.PC,
             self.CM,
             ALU(),
             Memory(),
             Stack(max_deepth=0x0800),
         ]
-        self.Slots = sum([c.get_slots() for c in self.components],[])
+        self.slot_names = sum([c.get_slot_names() for c in self.components],[])
+        self.slots = sum([c.get_slots() for c in self.components],[])
         self.Loop = True
         self.M = [
             0x00,  # load A 0xAD
@@ -43,11 +45,16 @@ class ZZM:
             self.show()
             self.step()
 
+    def show_commands(self)->None:
+        print("==Command==")
+        for i in range(len(self.slot_names)):
+            print(f"{hex(i)}  {self.slot_names[i]}")
+
     def show(self) -> None:
-        print(f"PC:{self.PC}")
-        print(f"Registers:{self.Slots[1].R}")
-        print(f"M:{self.M}")
-        print(f"D:{self.D}")
+        print(f"PC:{self.PC.PC}")
+        print(f"Registers:{self.RG.R}")
+        print(f"M:{self.CM.PM}")
+        print(f"D:{self.CM.DM}")
 
     def register_exchange(self, X) -> None:
         pass

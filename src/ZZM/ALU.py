@@ -8,6 +8,7 @@ class ALU(Component):
 
     def __init__(self):
         super().__init__()
+        super()._slots_names = ['ALU']
         super()._slots = [self.calculate]
         super()._slots_register_config = 4
 

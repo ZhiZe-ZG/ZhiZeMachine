@@ -4,6 +4,7 @@ from .Component import Component
 class Stack(Component):
     def __init__(self, max_deepth=0x400):
         super().__init__()
+        super()._slots_names = ["STACK"]
         super()._slots = [self.stack_operation]
         super()._slots_register_config = 4
         self.max_deepth = max_deepth
