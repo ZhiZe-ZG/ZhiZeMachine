@@ -8,9 +8,9 @@ class ALU(Component):
 
     def __init__(self):
         super().__init__()
-        super()._slot_names = ['ALU']
-        super()._slots = [self.calculate]
-        super()._slots_register_config = 4
+        self._slot_names = ['ALU']
+        self._slots = [self.calculate]
+        self._slots_register_config = 4
 
     def calculate(self, reg, Mode):
         A, B = reg.R[0], reg.R[1]

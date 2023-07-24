@@ -4,9 +4,9 @@ from .Component import Component
 class Memory(Component):
     def __init__(self, address_width=8):
         super().__init__()
-        super()._slot_names = ['MEM']
-        super()._slots = [self.memory_operation]
-        super()._slots_register_config = 4
+        self._slot_names = ['MEM']
+        self._slots = [self.memory_operation]
+        self._slots_register_config = 4
         self.address_width = address_width
         self.M = [0 for _ in range(0x01 << self.address_width)]
 

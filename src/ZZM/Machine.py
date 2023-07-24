@@ -18,37 +18,45 @@ class ZZM:
             Memory(),
             Stack(max_deepth=0x0800),
         ]
-        self.slot_names = sum([c.get_slot_names() for c in self.components],[])
-        self.slots = sum([c.get_slots() for c in self.components],[])
+        self._slot_names = sum([c.get_slot_names() for c in self.components], [])
+        self.slots = sum([c.get_slots() for c in self.components], [])
         self.Loop = True
         self.M = [
-            0x00,  # load A 0xAD
-            0x01,  # load B 0x02
-            0x20,  # point: cal A/B
-            0x10,  # mov D(which is A%B) to A
-            0xE1,  # if C is not zero jmp to point
+            0x04,  # load E 0xAD
+            0x05,  # load F 0x02
+            0x10,  # mov E to A
+            0x10,  # mov F to B
+            0x13,  # point: cal A/B
+            0x10,  # mov D(which is A%B) to E
+            0x05, # mov 2 to F
+            0x03,  # mov jump target into D
+            0x11,  # if C is not zero jmp to point
             0xFF,  # end
         ]
         self.D = [
             0xAD,
             0x02,
+            0x40,
+            0x51,
             0x53,
-            0x30,
+            0x34,
+            0x02,
             0x02,  # jump to the third command of this program
+            0x01,
             0x00,
         ]
-        self.M = self.M + [0 for _ in range(0x100 - len(self.M))]
-        self.D = self.D + [0 for _ in range(0x100 - len(self.D))]
+        self.CM.PM = self.M + [0 for _ in range(0x100 - len(self.M))]
+        self.CM.DM = self.D + [0 for _ in range(0x100 - len(self.D))]
 
     def loop(self) -> None:
         while self.Loop:
             self.show()
             self.step()
 
-    def show_commands(self)->None:
+    def show_commands(self) -> None:
         print("==Command==")
-        for i in range(len(self.slot_names)):
-            print(f"{hex(i)}  {self.slot_names[i]}")
+        for i in range(len(self._slot_names)):
+            print(f"{hex(i)}  {self._slot_names[i]}")
 
     def show(self) -> None:
         print(f"PC:{self.PC.PC}")
@@ -63,11 +71,10 @@ class ZZM:
         if cmd < 0:
             pass
         # write immediate number
-        elif cmd >= 0x00 and cmd <= 0xFF:
-            self.slots[cmd](self.RG,opnum)
+        elif cmd >= 0x00 and cmd < 0xFF:
+            self.slots[cmd](self.RG, opnum)
         elif cmd == 0xFF:
             # stop
             self.Loop = False
             return
         self.PC.step()
-    

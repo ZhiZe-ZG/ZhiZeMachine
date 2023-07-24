@@ -5,4 +5,4 @@ from ZZM import ZZM
 if __name__ =='__main__':
     c = ZZM()
     c.show_commands()
-    # c.loop()
+    c.loop()

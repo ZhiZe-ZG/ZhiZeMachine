@@ -4,7 +4,7 @@ from .Component import Component
 class RegisterGroup16(Component):
     def __init__(self):
         super().__init__()
-        super()._slot_names = [
+        self._slot_names = [
             "register_write_data_0",
             "register_write_data_1",
             "register_write_data_2",
@@ -23,7 +23,7 @@ class RegisterGroup16(Component):
             "register_write_data_F",
             "register_exchange",
         ]
-        super()._slots = [
+        self._slots = [
             self.register_write_data_0,
             self.register_write_data_1,
             self.register_write_data_2,
@@ -42,7 +42,7 @@ class RegisterGroup16(Component):
             self.register_write_data_F,
             self.register_exchange,
         ]
-        super()._slots_register_config = 0
+        self._slots_register_config = 0
         self.reg_num = 16
         self.R = [0 for _ in range(self.reg_num)]
 

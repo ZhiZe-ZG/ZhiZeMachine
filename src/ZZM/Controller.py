@@ -3,9 +3,9 @@ from .Component import Component
 class ControllerMemory(Component):
     def __init__(self):
         super().__init__()
-        super()._slot_names = ['RW_PDM']
-        super()._slots = [self.read_write_PDM]
-        super()._slots_register_config = 4
+        self._slot_names = ['RW_PDM']
+        self._slots = [self.read_write_PDM]
+        self._slots_register_config = 4
         self.PM = [0 for _ in range(256)] # program memory
         self.DM = [0 for _ in range(256)] # data memory
 
@@ -33,8 +33,9 @@ class ControllerMemory(Component):
 class ProgramCounter(Component):
     def __init__(self):
         super().__init__()
-        super()._slots = [self.jump]
-        super()._slots_register_config = 4
+        self._slot_names = ["JMP"]
+        self._slots = [self.jump]
+        self._slots_register_config = 4
         self.PC = 0
 
     def jump(self,reg, mode):
