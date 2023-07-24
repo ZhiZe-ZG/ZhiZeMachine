@@ -1,10 +1,14 @@
-class ALU:
+from .Component import Component
+
+class ALU(Component):
     """
     8-bit ALU
     """
 
     def __init__(self):
-        pass
+        super().__init__()
+        super()._slots = [self.calculate]
+        super()._slots_register_need = [{'in':[0,1], 'out':[2,3]}]
 
     def calculate(self, A, B, Mode):
         res = 0
