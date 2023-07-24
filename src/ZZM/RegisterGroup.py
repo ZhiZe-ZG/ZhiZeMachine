@@ -4,7 +4,7 @@ from .Component import Component
 class RegisterGroup16(Component):
     def __init__(self):
         super().__init__()
-        super()._slots_names = [
+        super()._slot_names = [
             "register_write_data_0",
             "register_write_data_1",
             "register_write_data_2",
